@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Добавление закладки</title>
-</head>
-<body>
-    <form method="post">
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Добавление закладок
+{% endblock title %}
+
+{% block content %}
+    {% bootstrap_messages %}
+
+    <form method="post" class="form">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        {% endbuttons %}
     </form>
-</body>
-</html>
+{% endblock content %}

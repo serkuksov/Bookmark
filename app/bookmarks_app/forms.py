@@ -13,7 +13,6 @@ class BookmarkForm(forms.ModelForm):
     def clean_bookmark_url(self):
         bookmark_url = self.cleaned_data.get("bookmark_url")
         user = self.instance.user
-        # user = self.cleaned_data.get('user')
         if user is not None:
             # Проверить, нет ли уже закладки с такой комбинацией user и url
             if Bookmark.objects.filter(user=user, bookmark_url=bookmark_url).exists():

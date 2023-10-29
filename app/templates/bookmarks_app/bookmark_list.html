@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Список закладок</title>
-</head>
-<body>
-    {{ bookmark_list }}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Список закладок
+{% endblock title %}
+
+{% block content %}
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Ссылка</th>
+          <th scope="col">Заголовок</th>
+          <th scope="col">Описание</th>
+          <th scope="col">Фавикон</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bookmark in object_list %}
+            <tr>
+              <td>{{ bookmark.bookmark_url }}</td>
+              {% if bookmark.title is None %}
+                  <td colspan="3">В процесе загрузки</td>
+              {% else %}
+                  <td>{{ bookmark.title }}</td>
+                  <td>{{ bookmark.description }}</td>
+                  <td>{{ bookmark.favicon_url }}</td>
+              {% endif %}
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock content %}
