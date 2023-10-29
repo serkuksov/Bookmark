@@ -24,8 +24,10 @@
                   <td colspan="3">В процесе загрузки</td>
               {% else %}
                   <td>{{ bookmark.title }}</td>
-                  <td>{{ bookmark.description }}</td>
-                  <td>{{ bookmark.favicon_url }}</td>
+                  <td class="col-md-4">{{ bookmark.description }}</td>
+                  <td>
+                      <img src="{{ bookmark.favicon_url }}" alt="">
+                  </td>
               {% endif %}
             </tr>
         {% endfor %}
