@@ -28,3 +28,4 @@ repos:
           - django-bootstrap4
           - types-requests
           - types-beautifulsoup4
+          - psycopg2-binary
