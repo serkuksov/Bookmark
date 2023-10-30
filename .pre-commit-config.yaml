@@ -26,3 +26,5 @@ repos:
           - django-stubs
           - python-dotenv
           - django-bootstrap4
+          - types-requests
+          - types-beautifulsoup4

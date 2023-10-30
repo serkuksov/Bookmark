@@ -1,5 +1,6 @@
 from django import forms
 
+from servises.parsers import BookmarkParsingManager
 from .models import Bookmark
 
 
@@ -20,3 +21,8 @@ class BookmarkForm(forms.ModelForm):
                     "Закладка с текущим URL уже существует для данного пользователя."
                 )
         return bookmark_url
+
+    def save(self, commit=True):
+        bookmark = super().save(commit=True)
+        BookmarkParsingManager(bookmark).parse_and_save()
+        return bookmark
