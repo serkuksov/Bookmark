@@ -1,6 +1,6 @@
 from django import forms
 
-from servises.parsers import BookmarkParsingManager
+from servises.tasks import task_ran_parser_bookmark_by_id
 from .models import Bookmark
 
 
@@ -24,5 +24,5 @@ class BookmarkForm(forms.ModelForm):
 
     def save(self, commit=True):
         bookmark = super().save(commit=True)
-        BookmarkParsingManager(bookmark).parse_and_save()
+        task_ran_parser_bookmark_by_id.delay(bookmark.id)
         return bookmark

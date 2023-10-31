@@ -7,10 +7,13 @@ services:
       dockerfile: ./app/Dockerfile
     container_name: web-app-bookmarks
     command: ./entrypoint.sh
+#    volumes:
+#      - ./app:/home/app
     ports:
       - "8000:8000"
     depends_on:
       - db
+      - redis
     env_file:
       - .env
   db:
@@ -27,6 +30,35 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
+  redis:
+    container_name: redis-bookmarks
+    ports:
+      - "6379:6379"
+    image: redis
+
+  worker:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: worker-bookmarks
+    command: poetry run celery -A config worker -l INFO
+    depends_on:
+      - web-app
+    env_file:
+      - .env
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: flower-bookmarks
+    command: poetry run celery -A config flower
+    depends_on:
+      - worker
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
 
 volumes:
   postgres_data:

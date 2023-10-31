@@ -113,11 +113,11 @@ class BookmarkParsingManager:
 
     def __init__(
         self,
-        bookmark: Bookmark,
+        bookmark_id: int,
         scraper: Type[BaseHTMLPageScraper] = RequestHTMLPageScraper,
     ):
-        self.bookmark = bookmark
-        self.url = bookmark.bookmark_url
+        self.bookmark = Bookmark.objects.get(id=bookmark_id)
+        self.url = self.bookmark.bookmark_url
         self.scraper = scraper(url=self.url)
         self._determination_soup()
         self._parse_url()
