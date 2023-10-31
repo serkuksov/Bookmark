@@ -3,6 +3,8 @@ from django.db import models
 
 
 class Bookmark(models.Model):
+    """Модель закладки"""
+
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, verbose_name="Пользователь"
     )
@@ -18,3 +20,4 @@ class Bookmark(models.Model):
         verbose_name = "Закладка"
         verbose_name_plural = "Закладки"
         unique_together = ("user", "bookmark_url")
+        ordering = ["-created_at"]
