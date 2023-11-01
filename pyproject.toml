@@ -28,6 +28,7 @@ django-stubs = "^4.2.5"
 django-stubs-ext = "^4.2.5"
 types-requests = "^2.31.0.10"
 types-beautifulsoup4 = "^4.12.0.7"
+celery-types = "^0.20.0"
 
 
 [tool.poetry.group.test.dependencies]
