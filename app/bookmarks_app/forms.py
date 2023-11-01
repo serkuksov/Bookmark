@@ -1,6 +1,6 @@
 from django import forms
 
-from servises.tasks import task_ran_parser_bookmark_by_id
+from services.tasks import task_ran_parser_bookmark_by_id
 from .models import Bookmark
 
 
@@ -18,7 +18,7 @@ class BookmarkForm(forms.ModelForm):
             # Проверить, нет ли уже закладки с такой комбинацией user и url
             if Bookmark.objects.filter(user=user, bookmark_url=bookmark_url).exists():
                 raise forms.ValidationError(
-                    "Закладка с текущим URL уже существует для данного пользователя."
+                    "Закладка с текущим URL уже существует для данного пользователя"
                 )
         return bookmark_url
 

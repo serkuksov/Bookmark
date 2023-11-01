@@ -1,5 +1,5 @@
 from config.celery import app
-from servises.parsers import BookmarkParsingManager
+from .parsers import BookmarkParsingManager
 
 
 @app.task(bind=True)
