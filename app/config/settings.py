@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Загрузка переменных окружения из файла .env
-dotenv_path = os.path.join(BASE_DIR.parent, ".dev.env")
+dotenv_path = os.path.join(BASE_DIR.parent, ".env.example")
 
 
 if os.path.exists(dotenv_path):
@@ -131,7 +131,6 @@ LOGOUT_REDIRECT_URL = "login"
 LOGOUT_URL = "logout"
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"

@@ -20,8 +20,8 @@
         {% for bookmark in object_list %}
             <tr>
               <td>{{ bookmark.bookmark_url }}</td>
-              {% if bookmark.title is None %}
-                  <td colspan="3">В процесе загрузки</td>
+              {% if bookmark.statys != "Done" %}
+                  <td colspan="3">{{ bookmark.get_statys_display }}</td>
               {% else %}
                   <td>{{ bookmark.title }}</td>
                   <td class="col-md-4">{{ bookmark.description }}</td>

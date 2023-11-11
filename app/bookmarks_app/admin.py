@@ -10,4 +10,5 @@ class AdminPatternTask(admin.ModelAdmin):
         "title",
         "description",
         "created_at",
+        "statys",
     )

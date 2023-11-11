@@ -24,5 +24,6 @@ class BookmarkForm(forms.ModelForm):
 
     def save(self, commit=True):
         bookmark = super().save(commit=True)
+        # TODO перенести метод запуска задачи в модель
         task_ran_parser_bookmark_by_id.delay(bookmark.id)
         return bookmark

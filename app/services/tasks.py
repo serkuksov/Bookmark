@@ -1,12 +1,26 @@
+from celery import Task
+from requests.exceptions import HTTPError
+
+from bookmarks_app.models import Bookmark, Statys
 from config.celery import app
 from .parsers import BookmarkParsingManager
 
 
-@app.task(bind=True)
-def task_ran_parser_bookmark_by_id(self, bookmark_id: int) -> None:
+class BaseTaskWithRetry(Task):
+    autoretry_for = (HTTPError,)
+    retry_kwargs = {
+        "max_retries": 5,
+        "countdown": 60,
+    }
+    retry_backoff = True
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        bookmark = Bookmark.objects.get(id=args[0])
+        bookmark.statys = Statys.ERROR
+        bookmark.save()
+
+
+@app.task(base=BaseTaskWithRetry)
+def task_ran_parser_bookmark_by_id(bookmark_id: int) -> None:
     """Задача запускающая процесс парсинга закладки по ее id в БД"""
-    try:
-        BookmarkParsingManager(bookmark_id=bookmark_id).parse_and_save()
-    except Exception as exc:
-        # повторная попытка выполнения задачи
-        self.retry(exc=exc, countdown=60, max_retries=2)
+    BookmarkParsingManager(bookmark_id=bookmark_id).parse_and_save()

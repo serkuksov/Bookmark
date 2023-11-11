@@ -6,7 +6,7 @@ from urllib.parse import urlparse, urlunparse
 
 from bs4 import BeautifulSoup, Tag
 
-from bookmarks_app.models import Bookmark
+from bookmarks_app.models import Bookmark, Statys
 from .scrapers import BaseHTMLPageScraper, RequestHTMLPageScraper
 
 
@@ -117,10 +117,17 @@ class BookmarkParsingManager:
         scraper: Type[BaseHTMLPageScraper] = RequestHTMLPageScraper,
     ):
         self.bookmark = Bookmark.objects.get(id=bookmark_id)
+        self._changing_task_status_to_in_executed(self.bookmark)
         self.url = self.bookmark.bookmark_url
         self.scraper = scraper(url=self.url)
         self._determination_soup()
         self._parse_url()
+
+    @staticmethod
+    def _changing_task_status_to_in_executed(bookmark: Bookmark) -> None:
+        """Изменение статуса обработки закладки на 'В работе'"""
+        bookmark.statys = Statys.EXECUTED
+        bookmark.save()
 
     def _determination_soup(self, html_content: str | None = None):
         """Определение переменной хранящей класс BeautifulSoup для данной страницы"""
@@ -142,6 +149,7 @@ class BookmarkParsingManager:
         self.bookmark.title = params_marcup.title
         self.bookmark.description = params_marcup.description
         self.bookmark.favicon_url = self.get_favicon_url()
+        self.bookmark.statys = Statys.DONE
         self.bookmark.save()
         return self.bookmark
 
