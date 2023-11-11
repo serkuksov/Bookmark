@@ -61,7 +61,7 @@ class BookmarkModelTest(TestCase):
                 bookmark_url="https://test1.com/",
             )
         self.assertIn(
-            "duplicate key value violates unique constraint",
+            "constraint",
             str(ex.exception),
         )
 

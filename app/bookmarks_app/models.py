@@ -30,6 +30,7 @@ class Bookmark(models.Model):
     favicon_url = models.URLField(blank=True, null=True, verbose_name="Фавикон")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     statys = models.CharField(
+        max_length=32,
         choices=Statys.choices,
         default=Statys.PLANNED,
         verbose_name="Статус",
