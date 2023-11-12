@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 if "test" not in sys.argv:
     # Загрузка переменных окружения из файла .env
-    dotenv_path = os.path.join(BASE_DIR.parent, ".env.example")
+    dotenv_path = os.path.join(BASE_DIR.parent, ".env.dev")
 
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path)
