@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
@@ -51,8 +50,7 @@ class BookmarkFormTest(BaseTestCase):
             form.errors["bookmark_url"],
         )
 
-    @patch("services.tasks.task_ran_parser_bookmark_by_id.delay")
-    def test_save_method(self, mock_task):
+    def test_save_method(self):
         form_data = {"bookmark_url": "https://test4.com"}
         form = BookmarkForm(data=form_data, instance=Bookmark(user=self.user))
 
@@ -60,6 +58,3 @@ class BookmarkFormTest(BaseTestCase):
         bookmark_db = Bookmark.objects.get(id=bookmark.id)
         self.assertEqual(bookmark.user, self.user)
         self.assertEqual(bookmark, bookmark_db)
-
-        # Проверьте, что функция task_ran_parser_bookmark_by_id.delay была вызвана с правильным аргументом (ID закладки)
-        mock_task.assert_called_with(bookmark.id)

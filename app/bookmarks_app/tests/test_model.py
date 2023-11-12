@@ -3,11 +3,12 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from bookmarks_app.models import Bookmark, Statys
 
 
+@override_settings(CELERY_BROKER_URL="memory://")
 class BookmarkModelTest(TestCase):
     """Тест модели закладок"""
 

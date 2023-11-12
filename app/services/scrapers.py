@@ -20,6 +20,7 @@ class RequestHTMLPageScraper(BaseHTMLPageScraper):
 
     def get_html(self) -> str:
         response = requests.get(self.url)
-        time.sleep(20)
+        # Задержка для тестов
+        time.sleep(10)
         response.raise_for_status()
         return response.text

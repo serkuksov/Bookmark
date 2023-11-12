@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Type
 from urllib.parse import urlparse, urlunparse
-
 from bs4 import BeautifulSoup, Tag
 
 from bookmarks_app.models import Bookmark, Statys
@@ -116,12 +115,11 @@ class BookmarkParsingManager:
         bookmark_id: int,
         scraper: Type[BaseHTMLPageScraper] = RequestHTMLPageScraper,
     ):
+        self.__soup: BeautifulSoup | None = None
         self.bookmark = Bookmark.objects.get(id=bookmark_id)
         self._changing_task_status_to_in_executed(self.bookmark)
         self.url = self.bookmark.bookmark_url
         self.scraper = scraper(url=self.url)
-        self._determination_soup()
-        self._parse_url()
 
     @staticmethod
     def _changing_task_status_to_in_executed(bookmark: Bookmark) -> None:
@@ -129,26 +127,33 @@ class BookmarkParsingManager:
         bookmark.statys = Statys.EXECUTED
         bookmark.save()
 
-    def _determination_soup(self, html_content: str | None = None):
+    @property
+    def soup(self) -> BeautifulSoup:
         """Определение переменной хранящей класс BeautifulSoup для данной страницы"""
-        if html_content is None:
+        if self.__soup is None:
             html_content = self.scraper.get_html()
-        self.soup = BeautifulSoup(html_content, "lxml")
+            self.__soup = BeautifulSoup(html_content, "lxml")
+        return self.__soup
 
-    def _parse_url(self, url: str | None = None):
+    @staticmethod
+    def _parse_url(url: str) -> tuple[str, str]:
         """Парсинг URL и сохранение переменных хранящих значение схемы и домена"""
-        if url is None:
-            url = self.url
         parse_url = urlparse(url)
-        self.scheme_url = parse_url.scheme
-        self.domain = parse_url.netloc
+        scheme_url = parse_url.scheme
+        domain = parse_url.netloc
+        return scheme_url, domain
 
     def parse_and_save(self):
         """Парсинг и сохранение данных в БД"""
-        params_marcup = self.get_params_marcup()
-        self.bookmark.title = params_marcup.title
-        self.bookmark.description = params_marcup.description
-        self.bookmark.favicon_url = self.get_favicon_url()
+        try:
+            params_marcup = self.get_params_marcup()
+            self.bookmark.title = params_marcup.title
+            self.bookmark.description = params_marcup.description
+            self.bookmark.favicon_url = self.get_favicon_url()
+        except Exception:
+            self.bookmark.statys = Statys.ERROR
+            self.bookmark.save()
+            raise Exception
         self.bookmark.statys = Statys.DONE
         self.bookmark.save()
         return self.bookmark
@@ -157,18 +162,20 @@ class BookmarkParsingManager:
         """Получение параметров разметки страницы"""
         params_marcup = ParamsMarkup()
         for markup_parser in self.markup_parsers:
-            parser = markup_parser(soup=self.soup)
-            if params_marcup.title is None:
-                params_marcup.title = parser.get_title()
-            if params_marcup.description is None:
-                params_marcup.description = parser.get_description()
+            if self.soup:
+                parser = markup_parser(soup=self.soup)
+                if params_marcup.title is None:
+                    params_marcup.title = parser.get_title()
+                if params_marcup.description is None:
+                    params_marcup.description = parser.get_description()
         return params_marcup
 
-    def get_favicon_url(self) -> str | None:
+    def get_favicon_url(self) -> str:
         """Получение ссылки на фавикон"""
         favicon = self.soup.find(name="link", attrs={"rel": "shortcut icon"})
         if isinstance(favicon, Tag):
             href = favicon.attrs["href"]
-        else:
-            href = "/favicon.ico"
-        return urlunparse((self.scheme_url, self.domain, href, "", "", ""))
+            if href.startswith("http"):
+                return href
+        scheme_url, domain = self._parse_url(self.url)
+        return urlunparse((scheme_url, domain, "/favicon.ico", "", "", ""))

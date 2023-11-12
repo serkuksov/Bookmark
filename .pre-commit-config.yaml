@@ -29,3 +29,5 @@ repos:
           - types-requests
           - types-beautifulsoup4
           - psycopg2-binary
+          - celery
+          - requests

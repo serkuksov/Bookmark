@@ -1,6 +1,5 @@
 from django import forms
 
-from services.tasks import task_ran_parser_bookmark_by_id
 from .models import Bookmark
 
 
@@ -21,9 +20,3 @@ class BookmarkForm(forms.ModelForm):
                     "Закладка с текущим URL уже существует для данного пользователя"
                 )
         return bookmark_url
-
-    def save(self, commit=True):
-        bookmark = super().save(commit=True)
-        # TODO перенести метод запуска задачи в модель
-        task_ran_parser_bookmark_by_id.delay(bookmark.id)
-        return bookmark
