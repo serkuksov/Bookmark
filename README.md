@@ -1,5 +1,7 @@
 # Bookmark
 
+[![Build Statys](https://github.com/serkuksov/Bookmark/actions/workflows/checks.yml/badge.svg?branch=master)](https://github.com/serkuksov/Bookmark/actions/workflows/checks.yml)
+
 Bookmark - это веб-сервис, разработанный на базе Django, который предоставляет функциональность по управлению вашими закладками.
 Сервис включает в себя регистрацию и аутентификацию пользователей, возможность добавлять
 интернет-ссылки в закладки, и автоматический парсинг страниц с извлечением заголовков,
