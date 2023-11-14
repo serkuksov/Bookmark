@@ -42,7 +42,7 @@ jobs:
 #        run: docker-compose --file docker-compose-test.yml up -d
       - name: Tests
         run: |
-          poetry run coverage run manage.py test
+          poetry run coverage run app/manage.py test
           poetry run coverage xml
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2
