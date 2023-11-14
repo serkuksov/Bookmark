@@ -1,6 +1,6 @@
 from config.celery import app
-from .base_task import BaseTaskWithRetry
-from .parsers import BookmarkParsingManager
+from services.base_task import BaseTaskWithRetry
+from services.parsers import BookmarkParsingManager
 
 
 @app.task(base=BaseTaskWithRetry)

@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
-from ..models import Bookmark
-from ..forms import BookmarkForm
+from bookmarks_app.models import Bookmark
+from bookmarks_app.forms import BookmarkForm
 
 
 class BaseTestCase(TestCase):

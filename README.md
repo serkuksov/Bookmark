@@ -1,4 +1,6 @@
 [![Build Statys](https://github.com/serkuksov/Bookmark/actions/workflows/checks.yml/badge.svg?branch=master)](https://github.com/serkuksov/Bookmark/actions/workflows/checks.yml)
+[![Coverage Status](https://coveralls.io/repos/github/serkuksov/Bookmark/badge.svg?branch=main)](https://coveralls.io/github/serkuksov/Bookmark?branch=main)
+
 
 # Bookmark
 

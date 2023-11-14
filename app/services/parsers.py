@@ -6,7 +6,7 @@ from urllib.parse import urlparse, urlunparse
 from bs4 import BeautifulSoup, Tag
 
 from bookmarks_app.models import Bookmark, Statys
-from .scrapers import BaseHTMLPageScraper, RequestHTMLPageScraper
+from services.scrapers import BaseHTMLPageScraper, RequestHTMLPageScraper
 
 
 @dataclass

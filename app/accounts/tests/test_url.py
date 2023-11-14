@@ -2,7 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from .. import views
+from accounts import views
 
 
 class UrlsTestCase(TestCase):

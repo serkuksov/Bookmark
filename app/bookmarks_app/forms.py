@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Bookmark
+from bookmarks_app.models import Bookmark
 
 
 class BookmarkForm(forms.ModelForm):

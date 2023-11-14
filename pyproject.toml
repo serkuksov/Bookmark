@@ -40,7 +40,21 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 mypy_path = "app"
+explicit_package_bases = true
 plugins = ["mypy_django_plugin.main"]
 
 [tool.django-stubs]
 django_settings_module = "config.settings"
+
+[tool.coverage.paths]
+source = [
+    "app/",
+    ]
+
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/manage.py",
+    "*/settings.py"
+    ]

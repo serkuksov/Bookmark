@@ -3,8 +3,8 @@ from django.db.models import QuerySet
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from .forms import BookmarkForm
-from .models import Bookmark
+from bookmarks_app.forms import BookmarkForm
+from bookmarks_app.models import Bookmark
 
 
 class BookmarkListView(LoginRequiredMixin, ListView):

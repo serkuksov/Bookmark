@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Bookmark
+from bookmarks_app.models import Bookmark
 
 
 @admin.register(Bookmark)
